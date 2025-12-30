@@ -34,7 +34,7 @@ df = load_data()
 numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
 
 # TITLE
-st.title("🛢️ Russian Oil Well Production Intelligence Platform Streamlit App")
+st.title("🛢️ Russian Oil Well Production Intelligence Platform")
 st.markdown("Actionable insights derived from oil well production data")
 
 # TABS
@@ -202,3 +202,4 @@ with tab5:
 # FOOTER
 st.markdown("---")
 st.caption("Developed using Streamlit | Russian Oil Well Production Analytics")
+
