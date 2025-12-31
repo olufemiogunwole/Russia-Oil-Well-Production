@@ -1,129 +1,150 @@
-# Russian Oil Well Production Intelligence Platform
-A Streamlit-based data analytics web application designed to extract actionable insights from Russian oil well production data.
-The platform enables trend analysis, well performance evaluation, clustering, and strategic decision support using data science techniques.
+# 🛢️ Russian Oil Well Production Analytics App
 
-# Features
-# 1. Data Overview
+An interactive Streamlit-based analytics application designed to derive actionable insights from time-series production data of an oil well in Russia.
+This project demonstrates how data analytics and machine learning can support engineering and operational decision-making in oil and gas production systems.
 
-Cleaned and structured oil well dataset
+🔗 Live Application: https://russiaoilwellapp.streamlit.app/
 
-Summary statistics for all numeric variables
+📂 GitHub Repository: https://github.com/olufemiogunwole/Russia-Oil-Well-Production
 
-# 2. Production Trends
+# 📌 Project Overview
 
-Interactive metric selection
+This application analyzes daily production data from Oil Well №807, located in northern Russia. The well produces a mixture of oil, gas, and water under high reservoir pressure and is equipped with artificial lift.
 
-Smoothed trend visualization using rolling averages
+The goal of this project is to:
 
-Identification of production decline and growth patterns
+Move from static dashboards to an interactive analytics platform
 
-# 3. Well Performance Analysis
+Support production monitoring, anomaly detection, and strategic decision-making
 
-Classification of wells into high-performing and low-performing
+Demonstrate how such systems can be extended to real-time database-driven workflows
 
-Adjustable performance threshold
+# 📊 Key Features
+📈 Production Trend Analysis
 
-Supports maintenance and investment prioritization
+Interactive selection of production metrics
 
-# 4. Clustering Insights
+Rolling averages for trend smoothing
 
-K-Means clustering of oil wells
+Identification of long-term production decline or stability
 
-Visual identification of similar well behaviors
+🏭 Performance Analysis
 
-Centroid-based interpretation of well segments
+Segmentation of high vs low production periods
 
-Useful for targeted operational strategies
+Threshold-based identification of operational inefficiencies
 
-# 5. Strategic Insights
+🧠 Operational Regime Clustering
 
-Decision-support insights for:
+K-Means clustering applied to time-series production metrics
 
-Maintenance planning
+Identification of:
 
-Production optimization
+High-output operating states
 
-Long-term forecasting
+Stable production regimes
 
-# Technologies Used
-1. Python 3
-2. Streamlit – web application framework
-3. Pandas – data cleaning & manipulation
-4. NumPy – numerical computation
-5. Matplotlib – data visualization
-6. Scikit-Learn – machine learning (K-Means clustering)
+Declining or inefficient production periods
 
-📂 Project Structure
+Cluster centroids represent typical operational conditions over time
 
-app.py                # Main Streamlit application
+📌 Strategic Insights
 
-Oil well.csv          # Oil well production dataset
+Clear interpretation of analytical outputs
 
-requirements.txt      # Python dependencies
+Engineering-focused insights for operational planning and optimization
 
-README.md             # Project documentation
+# 🗄️ Database & Real-Time Readiness
+
+The application is designed to be database-ready.
+With integration to a production database (e.g., PostgreSQL, MySQL, or cloud data warehouses), the platform can support:
+
+Live or near real-time production feeds
+
+Continuous monitoring of well performance
+
+Faster detection of anomalies and operational risks
+
+Ongoing decision support without manual data uploads
+
+# 🧰 Tech Stack
+
+Python
+
+Streamlit
+
+Pandas & NumPy
+
+Matplotlib
+
+Scikit-learn (K-Means Clustering)
+
+# 📂 Project Structure
+ Oil well website.py      # Main Streamlit application
+ Oil well.csv             # Oil well production dataset
+ requirements.txt         # Project dependencies
+ README.md                # Project documentation
+ .vscode/
+    settings.json
+
+# ⚙️ Installation & Local Run
+
+1️⃣ Clone the repository:
+
+git clone https://github.com/olufemiogunwole/Russia-Oil-Well-Production.git
+cd Russia-Oil-Well-Production
 
 
-📈 Data Source
+2️⃣ Install dependencies:
 
-Oil well production dataset (CSV format)
+pip install -r requirements.txt
 
-Includes multiple numeric production metrics per well
 
-Cleaned and standardized within the application
+3️⃣ Run the application:
 
-🧠 Analytical Approach
+streamlit run "Oil well website.py"
 
-Exploratory Data Analysis (EDA)
+# 📈 About the Dataset
 
-Rolling average smoothing for clearer trend interpretation
+The dataset contains daily operational measurements from Oil Well №807, including:
 
-Threshold-based classification for performance assessment
+Total fluid production
 
-Unsupervised learning (K-Means) for well segmentation
+Oil, gas, and water production rates
 
-🎯 Use Cases
+Water cut
 
-Oil & gas production monitoring
+Dynamic fluid level
 
-Asset performance management
+Reservoir pressure
 
-Predictive maintenance planning
+These measurements provide a comprehensive view of the well’s production performance and reservoir behaviour over time.
 
-Strategic decision-making support
+🎯 Key Insights
 
-Academic & industrial data analysis projects
+High water cut dominates production, significantly reducing oil output
 
-🚀 Deployment
+Pump performance inefficiencies are observed despite stable fluid levels
 
-The app can be deployed on:
+Production trends indicate late-stage decline
 
-Streamlit Cloud
+Clustering reveals distinct operational regimes requiring different intervention strategies
 
-Hugging Face Spaces
+🚀 Future Enhancements
 
-Render
+Database integration for real-time data ingestion
 
-Railway
+Automated anomaly alerts
 
-Simply upload:
+Advanced time-series forecasting
 
-app.py
+Multi-well scalability for field-level analysis
 
-requirements.txt
+# 👤 Author
 
-Oil well.csv
+Olufemi Ogunwole
+Data Analytics | Engineering | Machine Learning
 
-README.md
-
-👤 Author
-
-Developed by: [Olufemi Ogunwole]
-Role: Data Analyst / Data Scientist
-Tools: Python, Machine Learning, Data Visualization
-
-📜 License
+# 📜 License
 
 This project is for educational and analytical purposes.
-You may modify and reuse with proper attribution.
-# Russia-Oil-Well-Production
