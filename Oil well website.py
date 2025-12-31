@@ -30,7 +30,6 @@ numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
 
 # TITLE
 st.title("🛢️ Russian Oil Well Production Intelligence Platform")
-st.markdown("Production intelligence for a **single oil well over time**")
 
 # TABS
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -43,7 +42,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 # TAB 1: DATA OVERVIEW
 with tab1:
-    st.subheader("Dataset Overview (Single Well Time Series)")
+    st.subheader("Dataset Overview")
     st.dataframe(df, use_container_width=True)
 
     st.subheader("Summary Statistics")
@@ -64,7 +63,7 @@ with tab2:
 
     ax.set_xlabel("Time Index")
     ax.set_ylabel(metric)
-    ax.set_title(f"{metric} Trend for Single Oil Well")
+    ax.set_title(f"{metric} Trend")
     ax.legend()
 
     st.pyplot(fig)
@@ -98,7 +97,7 @@ with tab3:
 
 # TAB 4: PRODUCTION REGIME CLUSTERING
 with tab4:
-    st.subheader("Production Regime Segmentation (Single Well)")
+    st.subheader("Production Regime Segmentation")
 
     cluster_features = st.multiselect(
         "Select Features for Clustering",
@@ -140,12 +139,12 @@ with tab4:
             c="black",
             s=250,
             marker="X",
-            label="Regime Centers"
+            label="Cluster Centroids"
         )
 
         ax.set_xlabel(cluster_features[0])
         ax.set_ylabel(cluster_features[1])
-        ax.set_title("Single-Well Production Regimes")
+        ax.set_title("Oil Well Production Regimes")
         ax.legend(title="Operational States")
         ax.grid(alpha=0.3)
 
@@ -168,7 +167,6 @@ with tab5:
     st.subheader("Operational Decision Support")
 
     st.markdown("""
-    **Insights for a Single Oil Well**
     - Detect transition into water-dominated flow
     - Identify optimal operating windows
     - Support shut-in or workover decisions
@@ -179,4 +177,4 @@ with tab5:
 
 # FOOTER
 st.markdown("---")
-st.caption("Developed with Streamlit | Single Oil Well Production Analytics")
+st.caption("Oil Well Production Analytics")
