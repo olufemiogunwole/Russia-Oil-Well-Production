@@ -16,39 +16,34 @@ st.set_page_config(
 def load_data():
     df = pd.read_csv("Oil well.csv")
 
-    # Remove first row
     df = df.iloc[1:].reset_index(drop=True)
-
-    # Promote first row as headers
     df.columns = df.iloc[0]
     df = df[1:].reset_index(drop=True)
 
-    # Convert numeric columns
     for col in df.columns:
         df[col] = pd.to_numeric(df[col], errors="ignore")
 
     return df
 
 df = load_data()
-
 numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
 
 # TITLE
 st.title("🛢️ Russian Oil Well Production Intelligence Platform")
-st.markdown("Actionable insights derived from oil well production data")
+st.markdown("Production intelligence for a **single oil well over time**")
 
 # TABS
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📊 Data Overview",
     "📈 Production Trends",
-    "🏭 Well Performance",
-    "🧠 Clustering Insights",
+    "⚙️ Performance Periods",
+    "🧠 Production Regimes",
     "📌 Strategic Insights"
 ])
 
 # TAB 1: DATA OVERVIEW
 with tab1:
-    st.subheader("Dataset Overview")
+    st.subheader("Dataset Overview (Single Well Time Series)")
     st.dataframe(df, use_container_width=True)
 
     st.subheader("Summary Statistics")
@@ -56,7 +51,7 @@ with tab1:
 
 # TAB 2: PRODUCTION TRENDS
 with tab2:
-    st.subheader("Production Trend Analysis")
+    st.subheader("Production Trend Analysis Over Time")
 
     metric = st.selectbox("Select Production Metric", numeric_cols)
     window = st.slider("Smoothing Window", 10, 100, 50)
@@ -64,23 +59,23 @@ with tab2:
     rolling_avg = df[metric].rolling(window).mean()
 
     fig, ax = plt.subplots(figsize=(18, 6))
-    ax.scatter(df.index, df[metric], alpha=0.3, s=10, label="Raw Production")
+    ax.scatter(df.index, df[metric], alpha=0.3, s=10, label="Daily Measurements")
     ax.plot(df.index, rolling_avg, linewidth=2, label="Rolling Average")
 
-    ax.set_xlabel("Well Index")
+    ax.set_xlabel("Time Index")
     ax.set_ylabel(metric)
-    ax.set_title(f"{metric} Production Trend")
+    ax.set_title(f"{metric} Trend for Single Oil Well")
     ax.legend()
 
     st.pyplot(fig)
 
-    st.info("🔍 Rolling averages reveal long-term production decline or growth patterns. It helps identify aging or high-risk wells")
+    st.info("🔍 Highlights long-term decline, instability, or recovery phases in the well lifecycle.")
 
-# TAB 3: WELL PERFORMANCE
+# TAB 3: PERFORMANCE PERIODS
 with tab3:
-    st.subheader("High vs Low Performing Wells")
+    st.subheader("High vs Low Production Periods")
 
-    perf_metric = st.selectbox("Choose Performance Metric", numeric_cols)
+    perf_metric = st.selectbox("Choose Metric", numeric_cols)
 
     threshold = st.slider(
         "Performance Threshold",
@@ -92,18 +87,18 @@ with tab3:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.success("High Performing Wells")
+        st.success("High Production Periods")
         st.dataframe(df[df[perf_metric] >= threshold])
 
     with col2:
-        st.warning("Low Performing Wells")
+        st.warning("Low Production Periods")
         st.dataframe(df[df[perf_metric] < threshold])
 
-    st.info("📌 Target declining wells for intervention and optimization.")
+    st.info("📌 Identifies periods requiring optimization or intervention.")
 
-# TAB 4: CLUSTERING INSIGHTS (IMPROVED & LABELED)
+# TAB 4: PRODUCTION REGIME CLUSTERING
 with tab4:
-    st.subheader("Oil Well Segmentation Using K-Means")
+    st.subheader("Production Regime Segmentation (Single Well)")
 
     cluster_features = st.multiselect(
         "Select Features for Clustering",
@@ -112,94 +107,76 @@ with tab4:
     )
 
     if len(cluster_features) >= 2:
-        k = st.slider("Number of Clusters (k)", 2, 6, 3)
+        k = st.slider("Number of Production Regimes", 2, 5, 3)
 
         data = df[cluster_features].dropna().copy()
 
         model = KMeans(n_clusters=k, random_state=42)
-        data["Cluster"] = model.fit_predict(data)
+        data["Regime"] = model.fit_predict(data)
 
         centroids = model.cluster_centers_
 
-        # Meaningful cluster labels
-        cluster_labels = {
-            0: "Moderate Producers",
-            1: "Low Producers",
-            2: "High Producers"
+        regime_labels = {
+            0: "Stable Production",
+            1: "Declining / Water-Dominated",
+            2: "High Output / Optimal Operation"
         }
 
         fig, ax = plt.subplots(figsize=(12, 6))
 
-        for cluster_id, label in cluster_labels.items():
-            subset = data[data["Cluster"] == cluster_id]
+        for regime_id in np.unique(data["Regime"]):
+            subset = data[data["Regime"] == regime_id]
             ax.scatter(
                 subset[cluster_features[0]],
                 subset[cluster_features[1]],
                 alpha=0.6,
                 s=25,
-                label=label
+                label=regime_labels.get(regime_id, f"Regime {regime_id}")
             )
 
-        # Plot centroids
         ax.scatter(
             centroids[:, 0],
             centroids[:, 1],
             c="black",
             s=250,
             marker="X",
-            label="Cluster Centroids"
+            label="Regime Centers"
         )
-
-        # Annotate centroids
-        for i, centroid in enumerate(centroids):
-            ax.annotate(
-                cluster_labels.get(i, f"Cluster {i}"),
-                (centroid[0], centroid[1]),
-                textcoords="offset points",
-                xytext=(10, 10),
-                fontsize=10,
-                fontweight="bold"
-            )
 
         ax.set_xlabel(cluster_features[0])
         ax.set_ylabel(cluster_features[1])
-        ax.set_title("Oil Well Clusters by Production Performance")
-        ax.legend(title="Well Categories")
+        ax.set_title("Single-Well Production Regimes")
+        ax.legend(title="Operational States")
         ax.grid(alpha=0.3)
 
         st.pyplot(fig)
 
-        # Show labeled cluster data
-        data["Cluster Name"] = data["Cluster"].map(cluster_labels)
+        data["Regime Description"] = data["Regime"].map(regime_labels)
         st.dataframe(data)
 
         st.info("""
-        🧠 **Cluster Meaning**
-        • **Low Producers:** Declining or marginal wells  
-        • **Moderate Producers:** Stable, mid-life wells  
-        • **High Producers:** Strategic high-value assets  
-
-        🎯 Apply different operational strategies per cluster.
+        🧠 **Interpretation**
+        - Clusters represent **operating regimes over time**
+        - Useful for identifying instability, water breakthrough, and late-life decline
         """)
 
     else:
-        st.warning("Select at least two features for clustering.")
+        st.warning("Select at least two features.")
 
 # TAB 5: STRATEGIC INSIGHTS
 with tab5:
-    st.subheader("Strategic Decision Support")
+    st.subheader("Operational Decision Support")
 
     st.markdown("""
-    **Key Actions Derived from Data**
-    - Prioritize high-producing wells
-    - Optimize moderate producers
-    - Intervene early in declining wells
-    - Allocate budgets using cluster behavior
+    **Insights for a Single Oil Well**
+    - Detect transition into water-dominated flow
+    - Identify optimal operating windows
+    - Support shut-in or workover decisions
+    - Enable future real-time monitoring via database integration
     """)
 
-    st.success("✔ Enables evidence-based oil production decisions.")
+    st.success("✔ Time-based intelligence for production optimization.")
 
 # FOOTER
 st.markdown("---")
-st.caption("Developed using Streamlit | Russian Oil Well Production Analytics")
-
+st.caption("Developed with Streamlit | Single Oil Well Production Analytics")
